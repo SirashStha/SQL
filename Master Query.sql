@@ -209,4 +209,3 @@ SELECT * FROM Customer
 SELECT * FROM Customer_Address
 SELECT * FROM Account
 SELECT * FROM Account_Trans
-
