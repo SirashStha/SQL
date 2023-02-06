@@ -19,10 +19,12 @@ AS
 BEGIN
 UPDATE Account_Trans
 	SET Total_Balance =( CASE WHEN (acct.Tran_Type = 'd') THEN (A.Balance + acct.Tran_Amount) 
-								WHEN (acct.Tran_Type = 'w' AND A.Balance > 0 ) THEN (A.Balance - acct.Tran_Amount) 
-								ELSE 'Error' END),
+								WHEN (acct.Tran_Type = 'w' AND A.Balance > acct.Tran_Amount ) THEN (A.Balance - acct.Tran_Amount) 
+								ELSE A.Balance END),
 		Remarks = (CASE WHEN (acct.Tran_Type = 'd') THEN ('Deposit')
-						WHEN (acct.Tran_Type = 'w') THEN ('Withdraw') END)
+						WHEN (acct.Tran_Type = 'w' AND A.Balance > acct.Tran_Amount) THEN ('Withdraw') 
+						ELSE 'Error'
+						 END)
 	FROM Account_Trans acct JOIN Account A
 		ON acct.Account_Id = A.Acc_ID
 	JOIN inserted i
