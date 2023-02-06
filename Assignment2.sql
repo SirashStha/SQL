@@ -76,20 +76,55 @@ FROM Customer C JOIN Account A
 
 
 -- Customer with account having 0 balance
-SELECT  C.Full_Name, A.Balance
-FROM Customer C LEFT JOIN Account A
+SELECT DISTINCT C.Full_Name, A.Balance
+FROM Customer C INNER JOIN Account A
 	ON C.CID = A.Customer_Id
 WHERE A.Balance = 0
-Group By (C.Full_Name, A.Balance)
+----------------------------------------
+SELECT  C.Full_Name, A.Balance
+FROM Customer C INNER JOIN Account A
+	ON C.CID = A.Customer_Id
+WHERE A.Balance = 0
+Group By C.Full_Name, A.Balance
+-----------------------------------------
+SELECT A.Acc_Full_Name, A.Balance, MAX(acc.Dense) 'RANK'
+From (SELECT C.CID, C.Full_Name, ROW_NUMBER()OVER (ORDER BY C.Full_Name) Dense From Customer C) AS acc
+		JOIN Account A
+		ON acc.CID = A.Customer_Id
+		WHERE A.Balance = 0
+		GROUP BY A.Acc_Full_Name, A.Balance
+-------------------------------------
+SELECT A.Acc_Full_Name, A.Balance, MAX(acc.Dense)
+From (SELECT C.CID, DENSE_RANK()OVER (PARTITION BY C.CID ORDER BY C.Full_Name) Dense From Customer C) AS acc
+		JOIN Account A
+		ON acc.CID = A.Customer_Id
+		WHERE A.Balance = 0
+		GROUP BY A.Acc_Full_Name, A.Balance
+-----------------------------------------------------
+--Creating Temporary Table
+SELECT A.Customer_Id, 
+		A.Acc_ID, A.Acc_Full_Name, A.Balance,
+		ROW_NUMBER()OVER (PARTITION BY A.Customer_Id ORDER BY A.Acc_Id) Rank1 
+	INTO #ACCOUNT	
+	From Account A
+SELECT * FROm #ACCOUNT WHERE Rank1 = 1
+----------------------------------------------
+---- Account with 
+SELECT R.Customer_Id, 
+		R.Acc_ID, R.Acc_Full_Name,R.Balance
+		FROM 
+		(SELECT A.Customer_Id, 
+		A.Acc_ID, A.Acc_Full_Name,A.Balance,ROW_NUMBER()OVER (PARTITION BY A.Customer_Id ORDER BY A.Acc_Id) Rank1 FROM Account A) R
+		Where R.Rank1 = 2
+		
 
+ORDER BY Dense
+SELECT * FROM Customer C JOIN Account A On C.CID =  A.Customer_Id ORDER BY A.Balance
 SELECT * FROM Account
 
 INSERT INTO Account(Acc_Fname,Acc_Lname,Customer_Id)
-VALUES ('Sudip','Shrestha', 3),
-		('Sudip','Shrestha',3),
-		('Sudip','Shrestha',3),
-		('Sudip','Shrestha',3)
-
+VALUES ('Sirash','Shrestha', 1),
+		('Sirash','Shrestha',1)
 -- Account with Balance
 SELECT Acc_Full_Name, Balance 
 FROM Account
