@@ -11,6 +11,9 @@ FROM Customer C LEFT JOIN Customer_Address Ca
 WHERE Ca.Customer_ID IS NULL
 ORDER BY C.Full_Name
 
+SELECT C.Full_Name Customer_Name
+FROM Customer C
+WHERE NOT EXISTS (SELECT Customer_Id FROM Customer_Address  WHERE CID = Customer_Id)
 
 -- Customer with multiple address entry in Customer_Address table
 SELECT C.Full_Name, C.Phone
