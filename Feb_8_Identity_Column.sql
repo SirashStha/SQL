@@ -55,3 +55,4 @@ GO
 
 EXECUTE sp_rename N'dbo.Tmp_Test1', N'IDENTITY_DEMO', 'OBJECT'  
 Go
+COMMIT
