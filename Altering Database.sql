@@ -1,0 +1,13 @@
+USE [master];
+GO
+-- SET DB to Singleuser
+ALTER DATABASE Training2 SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
+GO
+-- Rename DB
+ALTER DATABASE Training2
+MODIFY NAME = Training
+GO
+
+-- SET DB to multiuser
+ALTER DATABASE Training2 SET MULTI_USER
+

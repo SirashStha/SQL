@@ -21,6 +21,9 @@ END
 
 TRUNCATE TABLE USERS
 
+SET STATISTICS TIME ON
+SET STATISTICS IO ON
+
 SET CONCAT_NULL_YIELDS_NULL OFF
 DECLARE @alphabet varchar(26) = 'abcdefghijklmnopqrstuvwxyz'
 DECLARE @len int = 0
@@ -30,4 +33,30 @@ BEGIN
 	SET @var = @var + SUBSTRING(@alphabet,CAST(CEILING(RAND() * 26) as int), 1)
 	SET @len = @len+1
 END
-SELECT @var
+SELECT @var NAMES
+
+
+SELECT TRANSLATE('3*[2+1]/{8-4}', '[]{}', '()()'); 
+
+SELECT STUFF('SQL Tutorial!', 4, 0, ' Query!');
+SELECT CONCAT('SQL Tutorial!', ' is fun!')
+
+SELECT SESSIONPROPERTY('CONCAT_NULL_YIELDS_NULL');
+
+SELECT SYSTEM_USER;
+SELECT USER_NAME();
+
+CREATE TABLE Persons (
+    ID int NOT NULL,
+    LastName varchar(255) NOT NULL,
+    FirstName varchar(255) NOT NULL,
+    Age int,
+	CONSTRAINT CK_Persons_Age CHECK (Age>=18)
+);
+
+INSERT INTO Persons(ID, LastName, FirstName, Age) 
+VALUES(1, 'Shrestha', 'Sirash', 17)
+
+SELECT * FROM Persons
+
+DROP TABLE Persons
