@@ -1,3 +1,6 @@
+USE Training
+GO
+
 CREATE or ALTER PROC USP_Total_Balance
 (@Tran_Amount DECIMAL(18,2), @Tran_Type varchar(1), @Acc_Id int)
 AS
@@ -45,7 +48,7 @@ END
 EXEC USP_Total_Balance 30000, 'w', 101
 
 
-SELECT * FROM Account_Trans  ORDER BY Account_Id, Tran_Id
-SELECT * FROM Account 
+--SELECT * FROM Account_Trans  ORDER BY Account_Id, Tran_Id
+--SELECT * FROM Account 
 
-TRUNCATE TABLE Account_Trans
+--TRUNCATE TABLE Account_Trans
